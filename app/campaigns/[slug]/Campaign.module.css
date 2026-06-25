@@ -1,0 +1,64 @@
+.container {
+  padding: 48px 0;
+}
+
+.hero {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  padding: 100px 0;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-lg);
+  margin-bottom: 48px;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(27, 58, 43, 0.9) 0%, rgba(27, 58, 43, 0.4) 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .heroOverlay {
+    background: linear-gradient(135deg, rgba(9, 12, 10, 0.95) 0%, rgba(15, 36, 26, 0.5) 100%);
+  }
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  color: #ffffff;
+  max-width: 600px;
+}
+
+.heroTitle {
+  font-size: 3.2rem;
+  color: #ffffff;
+  margin-bottom: 16px;
+  line-height: 1.15;
+}
+
+@media (max-width: 600px) {
+  .heroTitle {
+    font-size: 2.4rem;
+  }
+}
+
+.heroSubtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+}
+
+.blocksList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

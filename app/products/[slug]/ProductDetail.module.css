@@ -1,0 +1,188 @@
+.container {
+  padding: 48px 0;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 32px;
+  transition: color var(--transition-fast);
+}
+
+.backLink:hover {
+  color: var(--primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .backLink:hover {
+    color: var(--accent);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 64px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+.imageSection {
+  position: relative;
+  background: #f5f4f0;
+  border-radius: var(--radius-lg);
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--card-border);
+}
+
+@media (prefers-color-scheme: dark) {
+  .imageSection {
+    background: #1e2420;
+  }
+}
+
+.placeholderImg {
+  background: linear-gradient(135deg, rgba(27, 58, 43, 0.03) 0%, rgba(212, 163, 115, 0.15) 100__);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-family: var(--font-serif), serif;
+  font-style: italic;
+  font-size: 1.8rem;
+  padding: 40px;
+  text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .placeholderImg {
+    color: var(--accent);
+  }
+}
+
+.favBtn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.category {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary-light);
+  margin-bottom: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .category {
+    color: var(--accent);
+  }
+}
+
+.name {
+  font-size: 2.8rem;
+  margin-bottom: 16px;
+  line-height: 1.15;
+}
+
+@media (max-width: 600px) {
+  .name {
+    font-size: 2.2rem;
+  }
+}
+
+.price {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 24px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .price {
+    color: var(--accent);
+  }
+}
+
+.description {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+.benefitsSection {
+  margin-bottom: 36px;
+}
+
+.benefitsTitle {
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .benefitsTitle {
+    color: var(--accent-light);
+  }
+}
+
+.benefitsList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.benefitItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.95rem;
+}
+
+.benefitIcon {
+  color: var(--success);
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+}
+
+.addToCartBtn {
+  flex-grow: 1;
+}
