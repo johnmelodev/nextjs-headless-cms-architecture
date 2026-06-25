@@ -1,0 +1,43 @@
+{
+  "skin-care-routine": {
+    "title": "Rotina de Skincare Perfeita - Campanha Especial",
+    "slug": "skin-care-routine",
+    "hero": {
+      "title": "Monte Sua Rotina Ideal",
+      "subtitle": "Descubra o passo a passo completo para transformar a saúde da sua pele.",
+      "backgroundImage": "/images/campaign-hero.jpg"
+    },
+    "blocks": [
+      {
+        "componentName": "RichTextBlock",
+        "renderingId": "campaign-intro",
+        "fields": {
+          "content": {
+            "value": "<h2>O segredo é a constância</h2><p>Uma boa rotina de skincare não precisa ser complicada. Ela se baseia em três pilares fundamentais: Limpar, Tratar e Hidratar. Ao seguir esses passos diariamente pela manhã e à noite, você verá resultados duradouros na saúde e aparência da sua pele.</p>"
+          }
+        }
+      },
+      {
+        "componentName": "PromoBanner",
+        "renderingId": "campaign-promo",
+        "fields": {
+          "title": {
+            "value": "Combo Especial Rotina"
+          },
+          "description": {
+            "value": "Compre o Gel Hidratante + Espuma de Limpeza e leve um ecopad reutilizável de brinde!"
+          },
+          "badge": {
+            "value": "Exclusivo"
+          },
+          "ctaText": {
+            "value": "Ver Detalhes do Combo"
+          },
+          "ctaLink": {
+            "value": "/products"
+          }
+        }
+      }
+    ]
+  }
+}

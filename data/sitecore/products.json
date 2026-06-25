@@ -1,0 +1,58 @@
+[
+  {
+    "id": "prod-1",
+    "slug": "serum-vitamina-c",
+    "name": "Sérum Iluminador Vitamina C 15%",
+    "category": "Séruns",
+    "price": 129.9,
+    "image": "/images/serum-vit-c.jpg",
+    "description": "Um sérum antioxidante potente que combate os radicais livres, suaviza manchas e devolve a luminosidade natural da sua pele.",
+    "benefits": [
+      "Ilumina visivelmente o tom da pele",
+      "Estimula a produção natural de colágeno",
+      "Reduz linhas finas e sinais de cansaço"
+    ]
+  },
+  {
+    "id": "prod-2",
+    "slug": "gel-hidratante-acido-hialuronico",
+    "name": "Gel Hidratante Ácido Hialurônico",
+    "category": "Hidratantes",
+    "price": 89.9,
+    "image": "/images/hidratante-hialuronico.jpg",
+    "description": "Gel de absorção ultra-rápida com triplo peso de ácido hialurônico, oferecendo hidratação profunda por até 48 horas.",
+    "benefits": [
+      "Hidratação intensa sem deixar a pele oleosa",
+      "Preenche linhas de expressão causadas por desidratação",
+      "Textura leve em gel ideal para todos os tipos de pele"
+    ]
+  },
+  {
+    "id": "prod-3",
+    "slug": "espuma-limpeza-suave",
+    "name": "Espuma de Limpeza Facial Suave",
+    "category": "Limpeza",
+    "price": 59.9,
+    "image": "/images/espuma-limpeza.jpg",
+    "description": "Formulada com extrato de aloe vera e camomila, limpa os poros delicadamente mantendo a barreira protetora da pele intacta.",
+    "benefits": [
+      "Remove impurezas e maquiagem leve de forma eficaz",
+      "Acalma a pele irritada ou sensível",
+      "Sensação refrescante pós-uso sem ressecamento"
+    ]
+  },
+  {
+    "id": "prod-4",
+    "slug": "tonico-esfoliante-aha-bha",
+    "name": "Tônico Renovador AHA 5% + BHA 2%",
+    "category": "Tônicos",
+    "price": 94.5,
+    "image": "/images/tonico-aha-bha.jpg",
+    "description": "Fórmula esfoliante líquida que promove a renovação celular, desobstrui poros e melhora a textura geral da pele.",
+    "benefits": [
+      "Minimiza a aparência de poros dilatados",
+      "Controla a oleosidade excessiva da zona T",
+      "Uniformiza o relevo e textura cutânea"
+    ]
+  }
+]

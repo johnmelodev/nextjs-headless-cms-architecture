@@ -1,0 +1,71 @@
+{
+  "name": "home",
+  "displayName": "Home",
+  "placeholders": {
+    "headless-main": [
+      {
+        "componentName": "Hero",
+        "renderingId": "hero-1",
+        "fields": {
+          "title": {
+            "value": "A Revolução do Skincare Natural"
+          },
+          "subtitle": {
+            "value": "Fórmulas limpas, veganas e cientificamente comprovadas para uma pele radiante todos os dias."
+          },
+          "backgroundImage": {
+            "value": "/images/hero-bg.jpg"
+          },
+          "ctaText": {
+            "value": "Explorar Produtos"
+          },
+          "ctaLink": {
+            "value": "/products"
+          }
+        }
+      },
+      {
+        "componentName": "PromoBanner",
+        "renderingId": "promo-1",
+        "fields": {
+          "title": {
+            "value": "Ganhe 15% OFF na sua primeira compra!"
+          },
+          "description": {
+            "value": "Use o cupom SKIN15 no checkout e sinta a diferença."
+          },
+          "badge": {
+            "value": "Oferta Especial"
+          },
+          "ctaText": {
+            "value": "Resgatar Desconto"
+          },
+          "ctaLink": {
+            "value": "/campaigns/skin-care-routine"
+          }
+        }
+      },
+      {
+        "componentName": "ProductGrid",
+        "renderingId": "grid-1",
+        "fields": {
+          "title": {
+            "value": "Nossos Favoritos"
+          },
+          "subtitle": {
+            "value": "Os queridinhos da comunidade para rotinas de autocuidado diário."
+          }
+        }
+      },
+      {
+        "componentName": "RichTextBlock",
+        "renderingId": "rich-text-1",
+        "fields": {
+          "content": {
+            "value": "<h2>Por que escolher a Beauty Headless Store?</h2><p>Nossos produtos são desenvolvidos sob rígidos padrões dermatológicos. Utilizamos ingredientes bioativos de origem ética e embalagens 100% recicláveis para que você cuide de si mesma cuidando do planeta.</p>"
+          }
+        }
+      }
+    ]
+  }
+}
