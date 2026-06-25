@@ -1,64 +1,61 @@
-# Arquitetura do Projeto: Headless Store & Sitecore
+# Project Architecture: Headless Store & Sitecore Integration
 
-Este documento explica o fluxo de dados e a arquitetura de renderização do projeto `beauty-headless-store`. A estrutura foi projetada para emular fielmente uma infraestrutura corporativa real usando o **Sitecore XM Cloud** e o **Next.js**.
+This document outlines the data orchestration flow and rendering pipeline implemented in the `beauty-headless-store` project. The layout structure is designed to reflect enterprise-level patterns using **Sitecore XM Cloud** and **Next.js**.
 
 ---
 
-## 🗺 Fluxo de Dados e Renderização
+## 🗺️ Data Orchestration & Rendering Flow
 
-O diagrama a seguir ilustra a jornada da informação, desde a edição feita pela equipe de Marketing no CMS até a exibição final de elementos interativos no navegador do cliente:
+The following diagram illustrates the flow of information, from layout definitions edited by content authors in the CMS to the final dynamic elements rendered in the client's browser:
 
 ```txt
-[ Marketing ]  --> Cria/Edita layouts e conteúdos no Sitecore XM Cloud
-     ↓
-[ Sitecore XM Cloud ]  --> Exporta dados estruturados via APIs JSON (Experience Edge)
-     ↓
-[ API Route Handlers ] --> Recebe requisições e serve os payloads JSON simulados
-     ↓
-[ Next.js Server Components ] --> Consome a API, processa e faz o fetch assíncrono
-     ↓
-[ Component Mapper ]   --> Traduz nomes de componentes JSON em componentes React
-     ↓
-[ React Components ]   --> Estiliza e estrutura os blocos (Hero, PromoBanner, etc.)
-     ↓
-[ Browser / Cliente ]  --> Renderiza o HTML estático e hidrata botões interativos (Client)
+[ Marketing / Editors ]  --> Structure layouts and content in Sitecore Pages
+          │
+          ▼
+[ Sitecore XM Cloud ]    --> Export structured layout JSON via CDN-cached APIs (Experience Edge)
+          │
+          ▼
+[ API Route Handlers ]   --> Read local JSON mocks, simulating network responses
+          │
+          ▼
+[ Next.js Server Components ] -> Asynchronously fetch layout structures at request time
+          │
+          ▼
+[ Component Mapper ]     --> Resolve JSON names into corresponding React modules
+          │
+          ▼
+[ React Components ]     --> Assemble and style blocks (Hero, PromoBanner, etc.)
+          │
+          ▼
+[ Browser / Client ]     --> Render semantic HTML and hydrate interactive client behaviors
 ```
 
 ---
 
-## 🏛 Componentes da Arquitetura
+## 🏛️ Core Architecture Components
 
-### 1. Camada de Dados (Fake Headless CMS)
+### 1. Data Layer (Simulated Headless CMS)
+In a production Sitecore environment, content editors design pages using the visual interface of **Sitecore Pages**. Sitecore stores the layout trees and makes them globally accessible via the **Sitecore Experience Edge**, a high-performance GraphQL API.
+*   **Our Simulation:** We store local files in [`data/sitecore/`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/) (`home.json`, `products.json`, and `campaigns.json`) featuring properties like `componentName`, `renderingId`, `datasource`, and `fields`. This mimics the structure of layout payloads delivered by the Experience Edge API.
 
-Em um ambiente corporativo real, a equipe de marketing utiliza o editor visual do **Sitecore Pages** para arrastar e soltar componentes e editar textos. O Sitecore armazena essa árvore de componentes e a disponibiliza de forma desacoplada (_headless_) através do **Sitecore Experience Edge**, que é uma API GraphQL de altíssima performance hospedada na CDN.
+### 2. Integration API Layer (Route Handlers)
+Next.js server-side code queries HTTP endpoints to retrieve content updates.
+*   **Our Simulation:** Next.js Route Handlers in [`app/api/cms/`](file:///Users/joaomelo/Desktop/sitecore_next/app/api/cms/) read mock JSONs dynamically on every request, introducing standard HTTP status checks and simulating network APIs.
 
-- **Como simulamos:** Criamos arquivos locais em [`data/sitecore/`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/) (`home.json`, `products.json` e `campaigns.json`) contendo campos de texto, caminhos de imagens e definições de posicionamento que mimetizam exatamente os payloads GraphQL/REST do Experience Edge.
+### 3. Component Mapper (Dynamic Layout Engine)
+The headless CMS returns layout payloads containing a list of rendering blocks with a `componentName`. The frontend resolves these strings to instantiate the correct React components dynamically.
+*   **Our Implementation:** The [`componentMapper`](file:///Users/joaomelo/Desktop/sitecore_next/lib/cms/componentMapper.tsx) function inside `lib/cms/` reads the incoming component name (e.g., `"Hero"`, `"ProductGrid"`) and returns the appropriate React component, passing resolved CMS fields as typed properties.
 
-### 2. Camada de Integração de API (Route Handlers)
-
-O frontend Next.js não lê arquivos locais diretamente em produção; ele consome endpoints HTTP para buscar o conteúdo mais recente.
-
-- **Como simulamos:** Criamos rotas de API em [`app/api/cms/`](file:///Users/joaomelo/Desktop/sitecore_next/app/api/cms/) utilizando os Route Handlers do Next.js. Elas leem os arquivos JSON de forma dinâmica a cada requisição, emulando atrasos de rede e cabeçalhos HTTP normais de uma API externa.
-
-### 3. Component Mapper (Mapeador de Layout)
-
-Este é o coração de qualquer aplicação integrada com Sitecore. O Sitecore envia um JSON contendo uma lista de objetos com a propriedade `componentName`. O frontend precisa decidir dinamicamente qual componente React instanciar para cada item.
-
-- **Como implementamos:** Criamos a função [`componentMapper`](file:///Users/joaomelo/Desktop/sitecore_next/lib/cms/componentMapper.tsx) em `lib/cms/`. Ela recebe um objeto componente vindo do CMS, avalia seu tipo (ex: `"Hero"`, `"ProductGrid"`) e retorna o componente React correspondente passando os campos de dados como props.
-
-### 4. Server vs. Client Components (Arquitetura Híbrida)
-
-Adotamos o padrão recomendado do Next.js App Router para otimização de performance SEO:
-
-- **Server Components (Padrão):** Buscam dados no CMS, processam regras de negócio e geram o HTML estático no servidor. Reduzem drasticamente o tamanho do pacote Javascript enviado ao navegador.
-- **Client Components (Focalizados):** Usam a diretiva `"use client"` e são utilizados estritamente onde há interatividade em tempo real, manipulação de estado do React (`useState`, `useEffect`) ou eventos de clique do usuário (como o [`ProductFavoriteButton.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/components/ProductFavoriteButton.tsx)).
+### 4. Hybrid Rendering (Server vs. Client Components)
+Following modern Next.js App Router conventions:
+*   **Server Components (Default):** Fetch layout data and compile structured CSS/HTML on the server. This reduces client-side bundles and improves Search Engine Optimization (SEO) performance.
+*   **Client Components (Isolated):** Marked with the `"use client"` directive. These are strictly used for interactive UI nodes requiring React state hooks or mouse click events (such as [`ProductFavoriteButton.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/components/ProductFavoriteButton.tsx)).
 
 ---
 
-## 🚀 Como migrar para um Sitecore XM Cloud Real
+## 🚀 Migrating to Production Sitecore Experience Edge
 
-Para substituir a simulação local por uma instância real do Sitecore XM Cloud no futuro:
-
-1.  **Instalar o SDK oficial:** Adicione as dependências `@sitecore-jss/sitecore-jss-nextjs`.
-2.  **Configurar o endpoint GraphQL:** Altere a função de busca em [`lib/cms/`](file:///Users/joaomelo/Desktop/sitecore_next/lib/cms/) para fazer queries GraphQL apontando para o endpoint do _Experience Edge_ usando o token de API correspondente.
-3.  **Mapear componentes com o SDK:** Substitua o mapeador simples por `<Placeholder name="headless-main" rendering={props.rendering} />` fornecido pelo SDK do Sitecore JSS, vinculando os mesmos componentes visuais criados na Fase 3.
+To migrate from the simulated local API to a live Sitecore XM Cloud environment:
+1.  **Install the SDK:** Add `@sitecore-jss/sitecore-jss-nextjs` dependencies.
+2.  **Redirect Fetch Queries:** Replace utility functions in [`lib/cms/`](file:///Users/joaomelo/Desktop/sitecore_next/lib/cms/) with GraphQL fetch requests targeting your XM Cloud Experience Edge endpoint.
+3.  **Bind Components:** Replace the custom mapper with the official JSS `<Placeholder name="headless-main" rendering={props.rendering} />` components, mapping the visual blocks implemented in this project.

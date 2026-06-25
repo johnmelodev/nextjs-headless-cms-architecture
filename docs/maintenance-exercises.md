@@ -1,133 +1,119 @@
-# Exercícios Práticos de Manutenção
+# Practical Maintenance Exercises
 
-Estes exercícios simulam tarefas reais de desenvolvimento, engenharia e gerenciamento de conteúdo no projeto `beauty-headless-store`. Execute-os para testar seus conhecimentos e fixar o fluxo de desenvolvimento headless.
-
----
-
-## 📝 Exercício 1: Alterar conteúdo do CMS (Sem mexer no código!)
-
-**Objetivo:** Alterar a mensagem principal da Home Page através do arquivo de dados, simulando uma alteração feita pelo marketing no Sitecore XM Cloud.
-
-- **Instruções:**
-  1.  Abra o arquivo [`data/sitecore/home.json`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/home.json).
-  2.  Localize o bloco com `componentName: "Hero"`.
-  3.  Altere o valor do campo `"title"` de `"A Revolução do Skincare Natural"` para `"Sua Pele Radiante, Naturalmente"`.
-  4.  Salve o arquivo.
-  5.  Abra a Home no navegador e veja que a mensagem mudou instantaneamente sem alterar nenhuma linha nos arquivos React de `components/cms/Hero.tsx`.
+These challenges simulate real-world developer tasks, content adjustments, and workflow debugging in headless layouts. Perform these exercises to familiarize yourself with dynamic layout mappings and decoupled architectures.
 
 ---
 
-## 📝 Exercício 2: Adicionar novo produto ao catálogo
-
-**Objetivo:** Praticar a expansão do banco de dados em formato JSON.
-
-- **Instruções:**
-  1.  Abra o arquivo [`data/sitecore/products.json`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/products.json).
-  2.  Adicione um novo objeto produto no final do array:
-      ```json
-      {
-        "id": "prod-5",
-        "slug": "mascara-argila-verde",
-        "name": "Máscara de Argila Verde Purificante",
-        "category": "Máscaras",
-        "price": 74.9,
-        "image": "/images/argila-verde.jpg",
-        "description": "Máscara mineral que acalma, desintoxica e absorve a oleosidade excessiva da pele sem ressecar.",
-        "benefits": [
-          "Controle profundo de oleosidade e brilho",
-          "Ação calmante e anti-inflamatória natural",
-          "Desobstrui poros de forma imediata"
-        ]
-      }
-      ```
-  3.  Salve o arquivo.
-  4.  Navegue para `/products` e valide se a Máscara aparece na lista e se a contagem exibe "Exibindo 5 produtos".
-  5.  Clique em "Ver Detalhes" para abrir `/products/mascara-argila-verde` e conferir a página de detalhes dinâmica.
+## 📝 Exercise 1: Update CMS Content (Zero Code Changes)
+**Goal:** Modify the homepage hero header using only the data layer, simulating layout changes made by content authors in Sitecore XM Cloud.
+*   **Instructions:**
+    1.  Open the mock layout file in [`data/sitecore/home.json`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/home.json).
+    2.  Locate the component entry with `componentName: "Hero"`.
+    3.  Change the value of the `"title"` field from `"A Revolução do Skincare Natural"` to `"Sua Pele Radiante, Naturalmente"`.
+    4.  Save the file.
+    5.  Refresh your browser. The homepage title updates without touching the React code inside `components/cms/Hero.tsx`.
 
 ---
 
-## 📝 Exercício 3: Adicionar um novo bloco CMS (`TestimonialBlock`)
-
-**Objetivo:** Entender a expansão estrutural do Headless CMS criando um componente novo.
-
-- **Instruções:**
-  1.  Crie o arquivo `components/cms/TestimonialBlock.tsx` e o estilo em `.module.css`.
-  2.  Escreva o componente recebendo campos como `quote` (depoimento) e `author` (autor).
-  3.  Registre o novo componente no mapeador em [`lib/cms/componentMapper.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/lib/cms/componentMapper.tsx):
-      ```typescript
-      case "TestimonialBlock":
-        return <TestimonialBlock key={renderingId} fields={fields} />;
-      ```
-  4.  No arquivo [`data/sitecore/home.json`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/home.json), adicione o novo bloco no array `"headless-main"`:
-      ```json
-      {
-        "componentName": "TestimonialBlock",
-        "renderingId": "testimonial-1",
-        "fields": {
-          "quote": {
-            "value": "A melhor marca de skincare que já experimentei. Resultados em uma semana!"
-          },
-          "author": { "value": "Mariana Santos" }
+## 📝 Exercise 2: Add a Product to the Catalog
+**Goal:** Practice extending the data schemas inside structured JSON databases.
+*   **Instructions:**
+    1.  Open the product database file in [`data/sitecore/products.json`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/products.json).
+    2.  Append a new product object to the end of the array:
+        ```json
+        {
+          "id": "prod-5",
+          "slug": "mascara-argila-verde",
+          "name": "Máscara de Argila Verde Purificante",
+          "category": "Máscaras",
+          "price": 74.90,
+          "image": "/images/argila-verde.jpg",
+          "description": "Máscara mineral que acalma, desintoxica e absorve a oleosidade excessiva da pele sem ressecar.",
+          "benefits": [
+            "Controle profundo de oleosidade e brilho",
+            "Ação calmante e anti-inflamatória natural",
+            "Desobstrui poros de forma imediata"
+          ]
         }
-      }
-      ```
-  5.  Valide a renderização na Home Page.
+        ```
+    3.  Save the file.
+    4.  Open the browser to `/products`. Verify that the new item renders in the grid and that the counter displays "Exibindo 5 produtos".
+    5.  Click "Ver Detalhes" to load the dynamic `/products/mascara-argila-verde` page.
 
 ---
 
-## 📝 Exercício 4: Simular falha de build e teste automático (Pipeline CI/CD)
-
-**Objetivo:** Ver o pipeline de validação automática agir contra erros de digitação.
-
-- **Instruções:**
-  1.  Abra o arquivo [`app/page.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/app/page.tsx).
-  2.  Provoque um erro de TypeScript adicionando um import inválido ou tentando chamar uma propriedade inexistente em `homeData` (ex: `console.log(homeData.propriedadeInexistente)`).
-  3.  No terminal, execute o comando:
-      ```bash
-      npm run type-check
-      ```
-  4.  Veja que o comando falha e acusa o erro exato de compilação. Essa mesma validação automática impedirá que um código com erros seja mesclado no repositório remoto.
-  5.  Corrija o erro e rode `npm run type-check` novamente para ver o sucesso.
-
----
-
-## 📝 Exercício 5: Praticar Git (Criar Branch, Commit e PR)
-
-**Objetivo:** Exercitar o fluxo corporativo de entrega de código.
-
-- **Instruções:**
-  1.  Crie uma nova branch local: `git checkout -b feature/minha-correcao`.
-  2.  Modifique algo na estilização dos botões em [`components/ui/Button.module.css`](file:///Users/joaomelo/Desktop/sitecore_next/components/ui/Button.module.css).
-  3.  Execute `npm run format && npm run lint` para garantir que as alterações cumprem os requisitos de estilo.
-  4.  Adicione as modificações e commite:
-      ```bash
-      git add .
-      git commit -m "style: adjust button hover shadow intensity"
-      ```
-  5.  Retorne para a main e mescle: `git checkout main` -> `git merge feature/minha-correcao`.
+## 📝 Exercise 3: Implement a New CMS Block (`TestimonialBlock`)
+**Goal:** Understand how to register new layout components in the Component Mapper.
+*   **Instructions:**
+    1.  Create a React component file `components/cms/TestimonialBlock.tsx` and a CSS module `TestimonialBlock.module.css`.
+    2.  Structure the component to receive `quote` and `author` fields as props.
+    3.  Register the new component inside [`lib/cms/componentMapper.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/lib/cms/componentMapper.tsx):
+        ```typescript
+        case "TestimonialBlock":
+          return <TestimonialBlock key={renderingId} fields={fields} />;
+        ```
+    4.  Open [`data/sitecore/home.json`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/home.json) and add the component layout block to the `"headless-main"` array:
+        ```json
+        {
+          "componentName": "TestimonialBlock",
+          "renderingId": "testimonial-1",
+          "fields": {
+            "quote": { "value": "A melhor marca de skincare que já experimentei. Resultados em uma semana!" },
+            "author": { "value": "Mariana Santos" }
+          }
+        }
+        ```
+    5.  Confirm the rendering output on your homepage.
 
 ---
 
-## 📝 Exercício 6: Simular um Conflito de Merge
-
-**Objetivo:** Aprender a resolver conflitos de arquivos simultâneos.
-
-- **Instruções:**
-  1.  Crie a branch `branch-a` e altere o título do Hero no arquivo `data/sitecore/home.json` para `"Título A"`. Commite a alteração.
-  2.  Volte para a `main` e crie a branch `branch-b` a partir da main. Altere o mesmo título no mesmo arquivo para `"Título B"`. Commite a alteração.
-  3.  Retorne para a `main` e mescle a `branch-a`: `git merge branch-a`. A main agora tem `"Título A"`.
-  4.  Tente mesclar a `branch-b` na `main`: `git merge branch-b`.
-  5.  O Git acusará um **Merge Conflict**. Abra o arquivo no editor de código, decida qual versão manter, remova as tags de conflito, salve e commite com `git commit` para encerrar o conflito.
+## 📝 Exercise 4: Simulating TypeScript Build Failures
+**Goal:** Observe how static type checking protects the production build pipeline.
+*   **Instructions:**
+    1.  Open the file in [`app/page.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/app/page.tsx).
+    2.  Introduce a type error, such as importing a non-existent function or calling an invalid property on `homeData` (e.g., `console.log(homeData.nonExistent)`).
+    3.  Run the type validation command in your terminal:
+        ```bash
+        npm run type-check
+        ```
+    4.  Check the output. The build compiler throws errors detailing the line and file. This check blocks faulty commits from merging on remote servers.
+    5.  Revert the changes and re-run type checks to verify clean compiling.
 
 ---
 
-## 📝 Exercício 7: Configuração de Variável de Ambiente
+## 📝 Exercise 5: Basic Branching & Code Review
+**Goal:** Practice committing changes on feature branches.
+*   **Instructions:**
+    1.  Create a branch locally: `git checkout -b feature/button-styles-tweak`.
+    2.  Modify the hover shadow values inside [`components/ui/Button.module.css`](file:///Users/joaomelo/Desktop/sitecore_next/components/ui/Button.module.css).
+    3.  Execute `npm run format` and `npm run lint` to verify coding standards.
+    4.  Stage and commit modifications:
+        ```bash
+        git add .
+        git commit -m "style: adjust primary button hover shadow intensity"
+        ```
+    5.  Switch back to the default branch and merge: `git checkout main` followed by `git merge feature/button-styles-tweak`.
 
-**Objetivo:** Compreender a configuração de escopos e customizações em tempo de execução.
+---
 
-- **Instruções:**
-  1.  Abra o arquivo [`.env.local`](file:///Users/joaomelo/Desktop/sitecore_next/.env.local).
-  2.  Altere a variável `NEXT_PUBLIC_SITE_NAME` para `"Glow Skincare Store"`.
-  3.  Salve o arquivo.
-  4.  Inicie o servidor de desenvolvimento com `npm run dev`.
-  5.  Abra o site e observe que o título da aba do navegador, o Header e o Footer agora refletem o novo nome da marca configurado via variável de ambiente de forma dinâmica!
+## 📝 Exercise 6: Conflict Resolution
+**Goal:** Practice resolving file conflicts in Git.
+*   **Instructions:**
+    1.  Create `branch-a` and change the Hero title in `data/sitecore/home.json` to `"Title A"`. Commit the change.
+    2.  Switch back to `main`, create `branch-b`, and edit the same title key in the same file to `"Title B"`. Commit the change.
+    3.  Switch back to `main` and merge `branch-a`: `git merge branch-a`.
+    4.  Attempt to merge `branch-b` into `main`: `git merge branch-b`.
+    5.  Git will flag a **Merge Conflict**. Open the file, choose which title to keep, remove the conflict markers, and finalize the commit.
+
+---
+
+## 📝 Exercise 7: Configure Environment Variables
+**Goal:** Learn how to customize application parameters via scope environments.
+*   **Instructions:**
+    1.  Open the file [`.env.local`](file:///Users/joaomelo/Desktop/sitecore_next/.env.local).
+    2.  Modify the variable `NEXT_PUBLIC_SITE_NAME` value to `"Glow Skincare Store"`.
+    3.  Save the file and run the server:
+        ```bash
+        npm run dev
+        ```
+    4.  Observe that the tab title, Header header, and Footer labels updated to display the new name.

@@ -1,106 +1,93 @@
-# Fluxo de Trabalho Git Corporativo
+# Git Workflow Guidelines
 
-Este guia documenta o fluxo de controle de versão (Git) adotado para o desenvolvimento e manutenção do projeto `beauty-headless-store`. Este padrão simula o dia a dia de engenharia de software em projetos corporativos de grande porte.
+This document details the version control (Git) guidelines adopted for the development and maintenance of the `beauty-headless-store` project. It highlights branching standards, conventions, and merge practices used in professional collaborative engineering teams.
 
 ---
 
-## 🔄 Fluxo de Desenvolvimento Padrão
+## 🔄 Branching & Integration Flow
 
 ```txt
-  [ branch: main ] ────► Criar branch feature/xxxx ────► Fazer alterações
-                                                               ↓
-  [ Merge na main ] ◄── Aprovado ◄── Pull Request & Review ◄── Commits & Push
+  [ branch: main ] ────► Create feature/xxxx ────► Implement changes
+                                                        │
+  [ Merge to main ] ◄── Approved ◄── Pull Request & Review ◄── Commit & Push
 ```
 
 ---
 
-## 🛠️ Comandos Reais do Dia a Dia
+## 🛠️ Command Manual
 
-### 1. Iniciar uma nova tarefa (Feature Branch)
-
-Nunca faça alterações diretamente na branch `main`. Sempre crie uma branch específica para sua tarefa a partir da versão mais recente do código:
-
+### 1. Starting a Task (Feature Branch)
+Always develop features or fixes inside dedicated task branches created from the latest version of the default branch:
 ```bash
-# Garantir que está na main e atualizado
+# Ensure you are on the main branch and pull updates
 git checkout main
 git pull origin main
 
-# Criar e acessar a nova branch de funcionalidade
+# Create and switch to your feature branch
 git checkout -b feature/update-home-hero
 ```
 
-### 2. Verificar o estado do repositório
-
-Acompanhe quais arquivos foram modificados, excluídos ou criados:
-
+### 2. Inspecting Working Tree Status
+Review modified, deleted, and untracked files:
 ```bash
 git status
 ```
 
-### 3. Salvar alterações localmente
-
-Adicione as alterações ao stage e faça um commit com mensagens claras e semânticas:
-
+### 3. Committing Changes
+Stage your changes and write clear, semantic commit messages following the Conventional Commits specification:
 ```bash
-# Adicionar todos os arquivos modificados
+# Stage modified files
 git add .
 
-# Criar o commit com mensagem explicativa
+# Commit with a semantic message
 git commit -m "feat: update home hero title and visual CTA styles"
 ```
 
-### 4. Enviar a branch para o servidor remoto
-
-Envie suas alterações para o GitHub para disponibilizar o código para revisão:
-
+### 4. Pushing Changes to Remote
+Upload your branch to GitHub to make it available for review:
 ```bash
 git push origin feature/update-home-hero
 ```
 
-### 5. Abrir Pull Request (PR) e Code Review
+### 5. Pull Requests (PR) & Code Review
+*   Open the repository on GitHub.
+*   Click **Compare & pull request** next to your branch.
+*   Describe your changes and link relevant issue tickets.
+*   Assign reviewers to evaluate your code.
+*   If adjustments are requested, implement them locally on the same branch, commit, and push. The pull request updates automatically.
 
-- Acesse o repositório no GitHub.
-- Clique em **Compare & pull request**.
-- Descreva detalhadamente o que foi alterado e por quê.
-- Adicione revisores da sua equipe.
-- **Aprovação:** Aguarde o _Review_ (aprovação técnica). Se houver comentários pedindo ajustes, faça as alterações diretamente na sua branch, commite e dê `push` novamente. A PR será atualizada de forma automática.
-
-### 6. Integração Contínua (CI/CD) e Deploy
-
-- Ao abrir a PR e a cada push, a esteira do **GitHub Actions** (configurada em `.github/workflows/ci.yml`) será executada.
-- Ela irá testar o build do projeto, rodar a checagem de tipos (TypeScript) e rodar o linter (ESLint).
-- Se a esteira passar com sucesso e o código for aprovado, o merge na `main` será liberado.
-- Ao realizar o merge na `main`, a integração com a **Vercel** detectará a alteração e fará o deploy automático em ambiente de produção.
+### 6. CI/CD Pipeline & Deployment
+*   Opening or pushing to a PR triggers the **GitHub Actions** validation pipeline (defined in `.github/workflows/ci.yml`).
+*   The workflow runs formatting audits, TypeScript checks, and production builds.
+*   Once tests pass and the branch is merged into `main`, the code deploys automatically to production.
 
 ---
 
-## 📖 Dicionário de Operações Avançadas
+## 📖 Git Operations Reference
 
-- **`git pull`:** Baixa as atualizações do servidor remoto e as mescla imediatamente com a sua branch atual. (Combinação de `git fetch` + `git merge`).
-- **`git fetch`:** Apenas baixa as referências e metadados do servidor remoto, permitindo verificar novidades sem alterar suas branches locais de forma imediata.
-- **`git merge`:** Mescla o histórico de uma branch em outra (ex: integrar a `feature` na `main`). Cria um commit específico de mesclagem (_merge commit_).
-- **`git rebase`:** Reaplica seus commits locais no topo do histórico mais recente de outra branch. Mantém o histórico do Git limpo e linear (sem commits de mesclagem desnecessários).
-- **`git stash`:** Guarda temporariamente suas alterações de código ainda não commitadas para "limpar" sua área de trabalho. Útil para trocar de branch rapidamente sem perder trabalho inacabado:
-  - Salvar: `git stash`
-  - Recuperar: `git stash pop`
-- **`git revert`:** Cria um novo commit que desfaz exatamente as alterações de um commit passado. É a forma mais segura de desfazer alterações em branches compartilhadas (remotas), pois não altera o histórico anterior.
-- **`git reset`:** Move o ponteiro da sua branch para um commit anterior, removendo alterações do histórico. **Cuidado:** O comando `git reset --hard` apaga de vez as alterações locais não salvas. Deve ser usado com cautela apenas localmente.
+*   **`git pull`:** Fetches changes from the remote repository and merges them into the current local branch. (Equivalent to running `git fetch` followed by `git merge`).
+*   **`git fetch`:** Downloads metadata and references from remote branches without changing local working files.
+*   **`git merge`:** Combines the commit history of a target branch into your active branch, generating a merge commit.
+*   **`git rebase`:** Re-applies local commits on top of the latest commit of another branch. This keeps the commit graph clean and linear by avoiding merge commits.
+*   **`git stash`:** Temporarily stores modified, tracked files to clean your working directory. Useful when switching branches quickly without committing incomplete work:
+    *   Save: `git stash`
+    *   Restore: `git stash pop`
+*   **`git revert`:** Creates a new commit that applies the exact inverse changes of a past commit, safely undoing changes on shared remote branches.
+*   **`git reset`:** Point your active branch to a past commit. **Caution:** Running `git reset --hard` discards all uncommitted modifications.
 
 ---
 
-## ⚡ Tratamento de Conflitos de Merge (_Merge Conflicts_)
+## ⚡ Handling Merge Conflicts
 
-Conflitos acontecem quando duas pessoas editam a mesma linha do mesmo arquivo em branches diferentes.
-Para resolver localmente:
-
-1.  Puxe as atualizações da branch principal para sua branch de trabalho:
+Conflicts occur when different branches modify the same lines of the same file. To resolve conflicts locally:
+1.  Pull the latest changes from the default branch into your active feature branch:
     ```bash
     git checkout feature/update-home-hero
     git merge main
-    # OU usando rebase (preferencial em equipes ágeis)
+    # OR using rebase (recommended for linear histories)
     git rebase main
     ```
-2.  O Git pausará e marcará os conflitos no arquivo com marcadores visuais:
+2.  Git will flag conflicts with inline markers in affected files:
     ```txt
     <<<<<<< HEAD
     Sérum Iluminador Vitamina C 15%
@@ -108,13 +95,13 @@ Para resolver localmente:
     Super Sérum de Vitamina C Pura
     >>>>>>> main
     ```
-3.  Abra o arquivo afetado no seu editor (VS Code, etc.), decida qual versão manter, remova os marcadores (`<<<<<<<`, `=======`, `>>>>>>>`), salve o arquivo.
-4.  Conclua o processo:
+3.  Open the files in your editor, choose which changes to keep, and remove the Git markers (`<<<<<<<`, `=======`, `>>>>>>>`).
+4.  Commit the resolved changes:
     ```bash
-    git add arquivo-resolvido.tsx
-    # Se usou merge:
+    git add resolved-file.tsx
+    # If resolving after a merge:
     git commit -m "merge: resolve merge conflicts with main"
-    # Se usou rebase:
+    # If resolving after a rebase:
     git rebase --continue
     ```
-5.  Envie o código corrigido com `git push`. (Se usou rebase em branch remota, pode ser necessário enviar com force-with-lease: `git push --force-with-lease`).
+5.  Push the updated branch.

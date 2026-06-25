@@ -1,4 +1,4 @@
-# ✨ Beauty Headless Store — Skincare Premium
+# ✨ Beauty Headless Store — Premium Skincare E-commerce
 
 [![Next.js](https://img.shields.io/badge/Next.js-15+-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -6,148 +6,122 @@
 [![Linter](https://img.shields.io/badge/ESLint-Clean-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)]()
 [![CI/CD](https://img.shields.io/badge/GitHub%20Actions-Passing-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)]()
 
-Uma aplicação de e-commerce **headless premium** inspirada no mercado de cosméticos e skincare natural de alto luxo. Este projeto foi estruturado utilizando as melhores práticas do ecossistema Next.js moderno e simula uma integração corporativa realista com o **Sitecore XM Cloud**.
+A premium headless e-commerce store inspired by high-end organic skincare and cosmetics brands. This application showcases clean architectural patterns, structured layout mappings, and performance-first rendering pipelines by simulating integration with **Sitecore XM Cloud** CMS.
 
 ---
 
-## 🏛️ Destaques de Engenharia (Para Recrutadores)
+## 🏛️ Technical & Architectural Highlights
 
-Este projeto foi construído para demonstrar maturidade técnica, arquitetura de software limpa e boas práticas exigidas em ambientes enterprise:
+This project demonstrates modular engineering principles, clean code structure, and development workflows utilized in enterprise-level headless architectures:
 
-- **Padrão de Mapeamento de Layouts (Component Mapper):** Desacoplamento total de dados e exibição. O layout das páginas é definido no JSON do CMS; o Next.js lê essa estrutura em tempo de execução e monta a tela dinamicamente.
-- **Performance Otimizada (Hibridismo RSC/RCC):**
-  - **React Server Components (RSC) por padrão:** Todos os componentes do CMS (`Hero`, `ProductGrid`, `PromoBanner`, `RichTextBlock`) e páginas buscam dados e renderizam no servidor, enviando zero Javascript desnecessário ao navegador.
-  - **Client Components (RCC) Isolados:** Componentes folha de interatividade (como o [`ProductFavoriteButton`](file:///Users/joaomelo/Desktop/sitecore_next/components/ProductFavoriteButton.tsx)) usam `"use client"` estritamente onde necessário para gerenciar estados.
-- **Next.js 15+ Ready:** Uso das novas convenções assíncronas para parâmetros dinâmicos de rotas (`await params` em páginas e Route Handlers).
-- **Tipagem TypeScript Estrita:** **0 ocorrências de `any`** na camada do CMS. Todo o payload e mapeadores são fortemente tipados usando interfaces dinâmicas e registros genéricos.
-- **Esteira CI/CD Integrada:** Pipeline configurado via GitHub Actions que roda a cada Push/PR bloqueando códigos que não passem no linter, formatação ou build de produção.
+*   **Layout Mapping Pattern (Component Mapper):** Fully decouples layout data from UI rendering. The arrangement and fields of page elements are driven dynamically by CMS layout configurations resolved at runtime.
+*   **Hybrid Rendering Architecture (RSC / RCC):**
+    *   **React Server Components (RSC) by default:** Heavy database fetching and component assembly are performed on the server side (`Hero`, `ProductGrid`, `PromoBanner`, `RichTextBlock`), shipping zero client-side JavaScript overhead.
+    *   **Isolated Client Components (RCC):** State management and animations (such as the interactive [`ProductFavoriteButton`](file:///Users/joaomelo/Desktop/sitecore_next/components/ProductFavoriteButton.tsx)) are strictly isolated using `"use client"` where dynamic web interactions are required.
+*   **Next.js 15+ Integration:** Leverages the latest asynchronous paradigms for dynamic routing parameters (`await params` in Page files and Route Handlers).
+*   **Strict Type Safety:** Fully typed interfaces for CMS configurations and products, with **0 occurrences of `any`** in the core data layers.
+*   **Automated Quality Pipeline:** Configured GitHub Actions pipeline verifying ESLint formatting, TypeScript compilation, and production builds on every pull request.
 
 ---
 
-## 🗺️ Fluxo Arquitetural da Aplicação
+## 🗺️ Architectural Flow
 
 ```txt
-┌────────────────┐     Lança atualizações de layout e textos
+┌────────────────┐     Publishes content and layout templates
 │   Marketing    │ ───────────────────────────────────────────────┐
 └────────────────┘                                                │
         │                                                         ▼
         ▼                                               ┌──────────────────┐
-┌────────────────┐     Simula o banco do CMS            │  data/sitecore/  │
+┌────────────────┐     Simulates Sitecore Experience    │  data/sitecore/  │
 │  Sitecore CMS  │ ───────────────────────────────────► │    (JSONs)       │
 └────────────────┘                                      └──────────────────┘
                                                                   │
                                                                   ▼
-┌────────────────┐     Route Handlers locais            ┌──────────────────┐
+┌────────────────┐     Local Route Handlers             ┌──────────────────┐
 │  API Gateway   │ ◄─────────────────────────────────── │   app/api/cms/   │
 └────────────────┘                                      └──────────────────┘
         │
-        │ Consome via fetch() assíncrono (no servidor)
+        │ Fetched asynchronously on the server
         ▼
-┌────────────────┐     Resolve componentName p/ React   ┌──────────────────┐
+┌────────────────┐     Maps layout JSON to React components┌──────────────────┐
 │  Next.js RSC   │ ───────────────────────────────────► │ componentMapper  │
 └────────────────┘                                      └──────────────────┘
         │
-        │ Renderiza HTML limpo com CSS Modules
+        │ Renders semantic HTML with CSS Modules
         ▼
-┌────────────────┐     Hidrata elementos interativos    ┌──────────────────┐
+┌────────────────┐     Hydrates isolated dynamic actions│──────────────────┐
 │    Browser     │ ◄─────────────────────────────────── │   Client Comp.   │
 └────────────────┘                                      └──────────────────┘
 ```
 
 ---
 
-## 📂 O que foi implementado?
+## 📂 Project Structure
 
-Toda a estrutura foi construída de forma modular seguindo a risca a especificação corporativa:
-
-### ⚡ Integração & Dados (Backend Simulado)
-
-- **`data/sitecore/`:** Mock de banco de dados estruturado do CMS.
-  - [`home.json`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/home.json): Layout da home page com componentes encadeados.
-  - [`products.json`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/products.json): Catálogo completo de cosméticos.
-  - [`campaigns.json`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/campaigns.json): Configuração de landing pages promocionais.
-- **`app/api/cms/`:** API Routes (Route Handlers) servindo dados de forma dinâmica e com suporte a tratativa de erros e endpoints de busca por slug:
-  - [`home/route.ts`](file:///Users/joaomelo/Desktop/sitecore_next/app/api/cms/home/route.ts) | [`products/route.ts`](file:///Users/joaomelo/Desktop/sitecore_next/app/api/cms/products/route.ts) | [`products/[slug]/route.ts`](file:///Users/joaomelo/Desktop/sitecore_next/app/api/cms/products/[slug]/route.ts) | [`campaigns/[slug]/route.ts`](file:///Users/joaomelo/Desktop/sitecore_next/app/api/cms/campaigns/[slug]/route.ts)
-
-### 🎨 Design & Componentes (Frontend Premium)
-
-- **[`app/globals.css`](file:///Users/joaomelo/Desktop/sitecore_next/app/globals.css):** Design System customizado para skincare de luxo (Verdes intensos, Ouro areia, Alabastro de fundo, sombras suaves, animações integradas e Dark Mode nativo).
-- **`components/ui/`:** Elementos visuais base e navegação.
-  - [`Button.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/components/ui/Button.tsx): Botão inteligente com variantes e animações de hover.
-  - [`Card.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/components/ui/Card.tsx): Contêiner flexível para alinhamento de grids.
-  - [`Header.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/components/ui/Header.tsx) & [`Footer.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/components/ui/Footer.tsx): Cabeçalho e rodapé institucionais com efeito de transparência (glassmorphism).
-- **`components/cms/`:** Componentes dinâmicos que interpretam os dados do CMS:
-  - [`Hero.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/components/cms/Hero.tsx) | [`PromoBanner.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/components/cms/PromoBanner.tsx) | [`RichTextBlock.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/components/cms/RichTextBlock.tsx) | [`ProductGrid.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/components/cms/ProductGrid.tsx)
-- **[`components/ProductFavoriteButton.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/components/ProductFavoriteButton.tsx):** RCC (Client Component) que implementa um coração de favorito com animação de pulsação e controle de estado reativo.
-
-### 🌐 Páginas (App Router)
-
-- **[`app/page.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/app/page.tsx):** Home page que monta o layout dinamicamente via mapper.
-- **[`app/products/page.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/app/products/page.tsx):** Catálogo de coleção completa.
-- **[`app/products/[slug]/page.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/app/products/[slug]/page.tsx):** Detalhe de produto com renderização de SEO dinâmico, lista de benefícios e botão de favorito.
-- **[`app/campaigns/[slug]/page.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/app/campaigns/[slug]/page.tsx):** Landing pages customizadas para campanhas de marketing.
-
-### ⚙️ Integração Contínua (CI/CD)
-
-- **[`.github/workflows/ci.yml`](file:///Users/joaomelo/Desktop/sitecore_next/.github/workflows/ci.yml):** Pipeline de teste e compilação de produção automatizado para o GitHub Actions.
+```txt
+sitecore_next/
+  ├── app/                  # Next.js routing and page structures
+  │   ├── api/cms/          # Route Handlers simulating Sitecore Experience Edge
+  │   ├── campaigns/        # Dynamic promotional landing page routes
+  │   ├── products/         # Product catalog and dynamic product pages
+  │   ├── globals.css       # Skincare brand design system CSS tokens
+  │   └── layout.tsx        # Global shell wrapping Header, Footer, and fonts
+  ├── components/           # Reusable React components
+  │   ├── cms/              # Dynamic content blocks mapped from the CMS
+  │   ├── ui/               # Core design items (Buttons, Cards, Header, Footer)
+  │   └── ProductFavoriteButton.tsx # Heart toggle Client Component (with interactive state)
+  ├── data/sitecore/        # Simulated Headless CMS JSON database
+  ├── docs/                 # Detailed architectural and workflow documents
+  │   ├── architecture.md   # Headless layout mapping analysis
+  │   ├── git-workflow.md   # Standard branch flow and git guides
+  │   └── maintenance-exercises.md # Practical developer training exercises
+  ├── .github/workflows/    # CI/CD GitHub Actions workflow setups
+  ├── .env.example          # Template environment configurations
+  ├── .prettierrc           # Prettier code formatting rules
+  └── README.md             # This file
+```
 
 ---
 
-## 🚦 Como usar o projeto (Passo a Passo)
+## 🚦 Getting Started
 
-Uma das maiores vantagens da arquitetura do Next.js é que **você não precisa iniciar múltiplos servidores separados**. As rotas de API (_Route Handlers_) rodam no mesmo processo do frontend!
+The Next.js App Router architecture packages both frontend pages and serverless API endpoints into a single process. There is **no need to run separate backend servers**.
 
-### 1. Preparação Inicial
-
-Abra o terminal, navegue até a pasta do projeto e instale os pacotes:
-
+### 1. Installation
+Install project dependencies using the lockfile:
 ```bash
 npm install
 ```
 
-### 2. Iniciar a Aplicação (Servidor Unificado)
-
-Rode o comando abaixo para iniciar o servidor de desenvolvimento local:
-
+### 2. Run the Unified Development Server
+Launch the local development environment:
 ```bash
 npm run dev
 ```
-
-O Next.js iniciará o servidor em: **[http://localhost:3000](http://localhost:3000)**.
-Nesse momento, a API (Backend) e as páginas (Frontend) já estarão rodando de forma unificada!
+Open **[http://localhost:3000](http://localhost:3000)** in your browser to access the store.
 
 ---
 
-## 🧪 Como Testar e Impressionar?
+## 🧪 Testing the Headless CMS Engine
 
-Para ver o dinamismo do **Headless CMS** em ação, siga estes passos rápidos:
+To see the dynamic layout resolution in action:
 
-### Passo 1: Acesse a Loja
-
-Abra o site no seu navegador ([http://localhost:3000](http://localhost:3000)). Você verá a home elegante com o título `"A Revolução do Skincare Natural"`.
-
-### Passo 2: Altere os dados no CMS simulado
-
-Abra o arquivo [`data/sitecore/home.json`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/home.json). Altere o campo `"title"` do Hero:
-
-```diff
--"value": "A Revolução do Skincare Natural"
-+"value": "Sua Pele Radiante, Naturalmente ✨"
-```
-
-Salve o arquivo.
-
-### Passo 3: Observe a mudança instantânea!
-
-Volte para o navegador e recarregue a página (ou veja o Live Reload). O título mudará de imediato.
-**Explicação Técnica:** O Next.js detecta a mudança de dados, faz um novo fetch em tempo de execução no Route Handler e gera a estrutura HTML atualizada no servidor (Server Component), sem carregar um único byte de Javascript de edição no cliente.
+1.  Navigate to the store home page. The hero block displays `"A Revolução do Skincare Natural"`.
+2.  Open [`data/sitecore/home.json`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/home.json) in your code editor.
+3.  Modify the title value inside the `"Hero"` component:
+    ```diff
+    -"value": "A Revolução do Skincare Natural"
+    +"value": "Sua Pele Radiante, Naturalmente ✨"
+    ```
+4.  Save the file and refresh your browser. The title updates instantly.
+    *   **Behind the Scenes:** The server component dynamically pulls layout updates from the API route at request time, outputting fresh static HTML markup without loading editing engines or heavy client-side Javascript.
 
 ---
 
-## 📚 Documentação Adicional do Projeto
+## 📚 Technical Documentation
 
-No diretório [`docs/`](file:///Users/joaomelo/Desktop/sitecore_next/docs/), criamos guias avançados detalhados para consolidar o aprendizado:
+Explore the following guides inside the `docs/` folder for deeper insights into the project codebase:
 
-1.  **[Arquitetura Headless (architecture.md)](file:///Users/joaomelo/Desktop/sitecore_next/docs/architecture.md):** Um aprofundamento sobre como os payloads do Sitecore se traduzem em renderização de servidor e hidratação cliente no navegador.
-2.  **[Git Workflow Corporativo (git-workflow.md)](file:///Users/joaomelo/Desktop/sitecore_next/docs/git-workflow.md):** O manual definitivo com comandos reais de Git, práticas de branches e resolução de conflitos de merge.
-3.  **[Exercícios de Manutenção (maintenance-exercises.md)](file:///Users/joaomelo/Desktop/sitecore_next/docs/maintenance-exercises.md):** 7 desafios práticos propostos para você expandir o e-commerce, debugar bugs de TypeScript e experimentar novos componentes.
+1.  **[Headless Architecture (architecture.md)](file:///Users/joaomelo/Desktop/sitecore_next/docs/architecture.md):** Deep dive into the data orchestration flow and rendering pipeline.
+2.  **[Git Workflow Guidelines (git-workflow.md)](file:///Users/joaomelo/Desktop/sitecore_next/docs/git-workflow.md):** Command guides and branch structures.
+3.  **[Developer Maintenance Exercises (maintenance-exercises.md)](file:///Users/joaomelo/Desktop/sitecore_next/docs/maintenance-exercises.md):** Hands-on code extension challenges simulating new CMS component integration, TypeScript debugging, and environment variables configurations.
