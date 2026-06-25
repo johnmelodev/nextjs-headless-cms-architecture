@@ -1,0 +1,42 @@
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+
+@media (prefers-color-scheme: dark) {
+  .card:hover {
+    border-color: rgba(var(--accent-rgb), 0.25);
+  }
+}
+
+.cardHeader {
+  padding: 24px 24px 12px 24px;
+}
+
+.cardBody {
+  padding: 12px 24px 24px 24px;
+  flex-grow: 1;
+}
+
+.cardFooter {
+  padding: 16px 24px;
+  border-top: 1px solid var(--card-border);
+  background: rgba(var(--primary-rgb), 0.01);
+}
+
+@media (prefers-color-scheme: dark) {
+  .cardFooter {
+    background: rgba(255, 255, 255, 0.01);
+  }
+}

@@ -1,0 +1,74 @@
+.footer {
+  background: var(--primary-dark);
+  color: #ffffff;
+  padding: 64px 0 32px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 80px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .footer {
+    background: #090c0a;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+.brandInfo h3 {
+  color: var(--accent);
+  font-size: 1.6rem;
+  margin-bottom: 16px;
+}
+
+.brandInfo p {
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 350px;
+  font-size: 0.95rem;
+}
+
+.linkGroup h4 {
+  color: #ffffff;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.link {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.9rem;
+  transition: color var(--transition-fast);
+}
+
+.link:hover {
+  color: var(--accent);
+}
+
+.copyright {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 32px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.85rem;
+}

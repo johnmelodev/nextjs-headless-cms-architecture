@@ -1,0 +1,42 @@
+.richText {
+  padding: 48px 0;
+  font-family: var(--font-sans), sans-serif;
+  color: var(--foreground);
+  line-height: 1.8;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.richText h2 {
+  font-size: 2.2rem;
+  margin-top: 36px;
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+}
+
+.richText h2::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--accent);
+  margin-top: 8px;
+  border-radius: var(--radius-full);
+}
+
+.richText p {
+  margin-bottom: 24px;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.richText strong {
+  color: var(--primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .richText strong {
+    color: var(--accent-light);
+  }
+}
