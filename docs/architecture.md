@@ -35,27 +35,36 @@ The following diagram illustrates the flow of information, from layout definitio
 ## 🏛️ Core Architecture Components
 
 ### 1. Data Layer (Simulated Headless CMS)
+
 In a production Sitecore environment, content editors design pages using the visual interface of **Sitecore Pages**. Sitecore stores the layout trees and makes them globally accessible via the **Sitecore Experience Edge**, a high-performance GraphQL API.
-*   **Our Simulation:** We store local files in [`data/sitecore/`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/) (`home.json`, `products.json`, and `campaigns.json`) featuring properties like `componentName`, `renderingId`, `datasource`, and `fields`. This mimics the structure of layout payloads delivered by the Experience Edge API.
+
+- **Our Simulation:** We store local files in [`data/sitecore/`](file:///Users/joaomelo/Desktop/sitecore_next/data/sitecore/) (`home.json`, `products.json`, and `campaigns.json`) featuring properties like `componentName`, `renderingId`, `datasource`, and `fields`. This mimics the structure of layout payloads delivered by the Experience Edge API.
 
 ### 2. Integration API Layer (Route Handlers)
+
 Next.js server-side code queries HTTP endpoints to retrieve content updates.
-*   **Our Simulation:** Next.js Route Handlers in [`app/api/cms/`](file:///Users/joaomelo/Desktop/sitecore_next/app/api/cms/) read mock JSONs dynamically on every request, introducing standard HTTP status checks and simulating network APIs.
+
+- **Our Simulation:** Next.js Route Handlers in [`app/api/cms/`](file:///Users/joaomelo/Desktop/sitecore_next/app/api/cms/) read mock JSONs dynamically on every request, introducing standard HTTP status checks and simulating network APIs.
 
 ### 3. Component Mapper (Dynamic Layout Engine)
+
 The headless CMS returns layout payloads containing a list of rendering blocks with a `componentName`. The frontend resolves these strings to instantiate the correct React components dynamically.
-*   **Our Implementation:** The [`componentMapper`](file:///Users/joaomelo/Desktop/sitecore_next/lib/cms/componentMapper.tsx) function inside `lib/cms/` reads the incoming component name (e.g., `"Hero"`, `"ProductGrid"`) and returns the appropriate React component, passing resolved CMS fields as typed properties.
+
+- **Our Implementation:** The [`componentMapper`](file:///Users/joaomelo/Desktop/sitecore_next/lib/cms/componentMapper.tsx) function inside `lib/cms/` reads the incoming component name (e.g., `"Hero"`, `"ProductGrid"`) and returns the appropriate React component, passing resolved CMS fields as typed properties.
 
 ### 4. Hybrid Rendering (Server vs. Client Components)
+
 Following modern Next.js App Router conventions:
-*   **Server Components (Default):** Fetch layout data and compile structured CSS/HTML on the server. This reduces client-side bundles and improves Search Engine Optimization (SEO) performance.
-*   **Client Components (Isolated):** Marked with the `"use client"` directive. These are strictly used for interactive UI nodes requiring React state hooks or mouse click events (such as [`ProductFavoriteButton.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/components/ProductFavoriteButton.tsx)).
+
+- **Server Components (Default):** Fetch layout data and compile structured CSS/HTML on the server. This reduces client-side bundles and improves Search Engine Optimization (SEO) performance.
+- **Client Components (Isolated):** Marked with the `"use client"` directive. These are strictly used for interactive UI nodes requiring React state hooks or mouse click events (such as [`ProductFavoriteButton.tsx`](file:///Users/joaomelo/Desktop/sitecore_next/components/ProductFavoriteButton.tsx)).
 
 ---
 
 ## 🚀 Migrating to Production Sitecore Experience Edge
 
 To migrate from the simulated local API to a live Sitecore XM Cloud environment:
+
 1.  **Install the SDK:** Add `@sitecore-jss/sitecore-jss-nextjs` dependencies.
 2.  **Redirect Fetch Queries:** Replace utility functions in [`lib/cms/`](file:///Users/joaomelo/Desktop/sitecore_next/lib/cms/) with GraphQL fetch requests targeting your XM Cloud Experience Edge endpoint.
 3.  **Bind Components:** Replace the custom mapper with the official JSS `<Placeholder name="headless-main" rendering={props.rendering} />` components, mapping the visual blocks implemented in this project.
